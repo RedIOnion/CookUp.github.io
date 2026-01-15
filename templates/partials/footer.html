@@ -1,0 +1,108 @@
+{% block style %}
+<style>
+    .footer-custom {
+      background: white;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
+      color: #8A9A5B;
+      padding: 2.5rem 0 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #8A9A5B;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .footer-brand img {
+      width: 36px;
+      margin-right: 10px;
+    }
+
+    .footer-link {
+      color: #8A9A5B;
+      text-decoration: none;
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .footer-link:hover {
+      background-color: #e3e3e3;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: #8A9A5B;
+    }
+
+    .footer-divider {
+      border-top: 1px solid #8A9A5B;
+      opacity: 0.3;
+      margin: 1.5rem 0;
+    }
+
+    .footer-social i {
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer-section {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<footer class="footer-custom">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-4 footer-section">
+        <a href="/" class="footer-brand mb-3">
+          <img src="https://cdn-icons-png.freepik.com/512/98/98017.png" alt="CookUp Logo">
+          CookUp
+        </a>
+        <p class="small mt-2">
+          Discover, cook, and share amazing recipes with the CookUp community.
+        </p>
+      </div>
+
+      <div class="col-md-4 footer-section">
+        <h6 class="fw-bold mb-3">Explore</h6>
+        <a href="/browse" class="footer-link d-block">Home</a>
+        <a href="/browse" class="footer-link d-block">Browse Recipes</a>
+        {% if user and user.is_authenticated %}
+        <a href="/createPost" class="footer-link d-block">Create Recipe</a>
+        <a href="/pantry" class="footer-link d-block">Your Pantry</a>
+        <a href="/settings" class="footer-link d-block">Settings</a>
+        {% endif %}
+      </div>
+
+      <div class="col-md-4 footer-section">
+        <h6 class="fw-bold mb-3">Follow Us</h6>
+        <div class="d-flex gap-2 justify-content-md-start justify-content-center footer-social">
+          <a href="#" class="footer-link"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="footer-link"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="footer-link"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="footer-link"><i class="bi bi-github"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="text-center small">
+      © {{ year if year else "2026" }} CookUp. All rights reserved.
+    </div>
+
+  </div>
+</footer>
+
+{% endblock %}

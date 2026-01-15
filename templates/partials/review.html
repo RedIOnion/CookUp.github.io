@@ -1,0 +1,96 @@
+<style>
+    .review {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        width: 100%;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        transition: padding 0.2s, box-shadow 0.3s;
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+
+    .review:hover {
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+
+    .review-header img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+
+    .review-header p {
+        margin: 0;
+        font-weight: bold;
+        color: #4d4d4d;
+    }
+
+    .review-header .username {
+        font-size: 1.1rem;
+        color: #333;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .review-header .username:hover {
+        color: #8A9A5B;
+        cursor: pointer;
+    }
+
+    .review-header .timestamp {
+        font-size: 0.9rem;
+        color: #888;
+    }
+
+    .review-body {
+        font-size: 1rem;
+        color: #444;
+        line-height: 1.6;
+        word-wrap: break-word; 
+    }
+
+    .review-rating {
+        margin-top: 5px;
+        font-size: 1.1rem;
+        color: #FFA500;
+    }
+
+    .review-rating i {
+        margin-right: 2px;
+    }
+
+</style>
+
+<div class="review">
+    <div class="review-header">
+        <a href="{{ url_for('Profile', userID=review.User().id) }}" style="text-decoration: none; color: black;">
+            <div class="food-card-header">
+                <img src="{{ url_for('static', filename = review.User().profilePic) }}" 
+                    alt="{{ review.User().username }}'s Profile Picture" 
+                    class="img-fluid rounded-circle">
+                <p class="ms-3 mb-0">{{ review.User().username }}</p>
+            </div>
+        </a>
+        <p class="timestamp"> {{ review.Date() }} </p>
+    </div>
+
+    <div class="review-body">
+        <p>{{ review.content }}</p>
+    </div>
+
+    <div class="review-rating">
+        <p>
+            <i class="bi bi-star-fill text-warning"></i>
+            {{ review.rating }} / 5
+        </p>
+    </div>
+</div>

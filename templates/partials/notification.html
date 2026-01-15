@@ -1,0 +1,22 @@
+<div class = "d-flex">
+<a href="{{ notification.link }}"
+   class="list-group-item list-group-item-action py-2">
+
+  <div class="d-flex align-items-start">
+    <div class="me-2 text-primary">
+      <i class="bi bi-bell"></i>
+    </div>
+
+    <div class="flex-grow-1">
+      <div class="small text-wrap">
+        {{ notification.content }}
+      </div>
+    </div>
+    
+  </div>
+</a>
+
+<a href = "{{url_for('DeleteNotification', notificationID = notification.id)}}">
+    <i class="bi bi-trash"></i>
+</a>
+</div>

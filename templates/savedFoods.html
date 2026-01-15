@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="container" style = "margin-top: 10px;">
+        <h2>Your Pantry</h2>
+        <div class="row d-flex flex-wrap">
+            {% if user.SavedFoods() %}
+                {% for food in user.SavedFoods() %}
+                    <div class="col-md-3 mb-3">
+                        {% include "partials/miniPost.html" %}
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p>No Saved Food..</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

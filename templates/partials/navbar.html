@@ -1,0 +1,213 @@
+{% block style %}
+<style>
+    .dropdown-menu .list-group-item {
+      border: none;
+    }
+
+    .dropdown-menu .list-group-item:hover {
+      background-color: #f2f2f2;
+    }
+
+    .dropdown-menu {
+      border-radius: 12px;
+    }
+
+    .navbar-custom {
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #8A9A5B;
+    }
+
+    .navbar-brand img {
+      width: 36px;
+      margin-right: 8px;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: #8A9A5B;
+      padding: 8px 16px;
+      border-radius: 10px;
+    }
+
+    .navbar-item{
+      transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.2s ease, border-radius 0.3s ease;
+    }
+
+    .navbar-item:hover {
+      background-color: #e3e3e3;
+      border-radius: 20px;
+      color: #8A9A5B;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input {
+      border-radius: 20px;
+      border: 2px solid #8A9A5B;
+    }
+
+    .profile-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    .dropdown-menu {
+      border: 1px solid #8A9A5B;
+    }
+
+    .dropdown-item {
+      color: #8A9A5B;
+    }
+
+    .text-white {
+      color: #8A9A5B;
+    }
+
+    @media (max-width: 992px) {
+      .navbar-nav {
+        margin-top: 1rem;
+      }
+
+      .navbar-toggler {
+        border: none;
+      }
+
+      .navbar-toggler-icon {
+        background-color: #8A9A5B; 
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <div class="container-fluid d-flex justify-content-between">
+
+    <a class="navbar-brand d-flex align-items-center navbar-item" href="/">
+      <img src="https://cdn-icons-png.freepik.com/512/98/98017.png" alt="Logo">
+      CookUp
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link navbar-item" href="/browse">
+            <i class="bi bi-search"></i>
+            Browse
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        
+      {% if user and user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link navbar-item" href="/createPost">
+            <i class="bi bi-plus-square"></i>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link navbar-item dropdown-toggle position-relative d-flex"
+            href="#"
+            id="notificationDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-bell"></i>
+            {% if user.Notifications() %}
+              {% if user.Notifications()|length > 9 %}
+              <p>9+</p>
+              {% else %}
+              <p>{{user.Notifications()|length}}</p>
+              {% endif %}
+            {% endif %}
+          </a>
+
+          <div
+            class="dropdown-menu dropdown-menu-end p-0"
+            aria-labelledby="notificationDropdown"
+            style="width: 320px; max-height: 400px; overflow-y: auto;"
+          >
+            <div class="list-group list-group-flush">
+
+              {% if user.Notifications() %}
+                {% for notification in user.Notifications() %}
+                  {% include "partials/notification.html" %}
+                {% endfor %}
+              {% else %}
+                <div class="text-center small text-muted py-3">
+                  No notifications
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+            <div class="dropdown">
+              <a
+                href="#"
+                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle navbar-item"
+                data-bs-toggle="dropdown"
+              >
+                <img
+                  src="{{ url_for('static', filename = user.profilePic) }}"
+                  alt="profile"
+                  class="profile-img"
+                />
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item navbar-item" href="{{ url_for('Profile', userID=user.id) }}">{{ user.username }}</a></li>
+                <li><a class="dropdown-item navbar-item" href="/pantry">Your Pantry</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item navbar-item" href="/settings">Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item navbar-item" href="/logout">Log Out</a></li>
+              </ul>
+            </div>
+      {% else %}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a href="/login" class="nav-link navbar-item">Login</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/register" style="color:rgb(27, 37, 82)" class="nav-link navbar-item">Register</a>
+            </li>
+          </ul>
+      {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</body>
+{% endblock %}

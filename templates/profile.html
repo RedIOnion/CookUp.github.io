@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profileUser.username }}'s Profile{% endblock %}
+
+{% block style %}
+<style>
+    .settings-container {
+        position: absolute;
+        background-color: transparent;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.2s ease, border-radius 0.3s ease;
+        justify-content: center;
+        justify-items: center;
+        width: 30px;
+        height: 30px;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .settings-container:hover {
+        background-color: #e3e3e3;
+        border-radius: 20px;
+        color: #8A9A5B;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .settings-container i {
+        font-size: 30px;
+        color: rgb(27, 37, 82);
+    }
+
+    .createPost {
+        border-radius: 20px;
+        padding: 10px 15px;
+        display: inline-flex;
+        align-items: center;
+        color: black;
+        background-color: transparent;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .createPost i {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .createPost:hover {
+        border-radius: 40px;
+        background-color: #cadfc58e;
+        transform: scale(1.03);
+    }
+
+    .createPost a {
+        color: black;
+        text-decoration: none;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 10px;">
+    <div class="d-flex align-items-center">
+        <div class="me-4 position-relative">
+            <img src ="{{ url_for('static', filename = profileUser.profilePic) }}"
+                alt="{{ profileUser.username }}'s Profile Picture"
+                class="img-fluid rounded-circle"
+                style="width: 120px; height: 120px; object-fit: cover;">
+            
+            {% if profileUser.id == user.id %}
+            <div class="settings-container">
+                <a href="/settings" aria-label="Settings">
+                    <i class="bi bi-gear"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <div class = "d-flex">
+                <h1 class="h3"> {{ profileUser.username }}</h1>
+                <p class="h5 text-muted" style="margin-top: 7px; margin-left: 10px;">{{ profileUser.CookLevel() }}</p>
+                {% if user.is_authenticated and not profileUser == user %}
+                {% if not profileUser.id in  user.FollowingIDs() %}
+                <a href = "{{url_for('Follow', userID = profileUser.id)}}"><button class="btn" style="background-color: #8A9A5B; border: none; border-radius: 10px; margin-left: 10px; color:white">Follow</button></a>
+                {% else %}
+                <a href = "{{url_for('Unfollow', userID = profileUser.id)}}"><button class="btn" style="background-color: #8A9A5B; border: none; border-radius: 10px; margin-left: 10px; color:white">Unfollow</button></a>
+                {% endif %}
+                {% endif %}
+            </div>
+            <p class="h5 text-muted">{{ profileUser.Followers()|length }} Followers</p>
+        </div>
+    </div>
+    <br>
+{% if profileUser.id == user.id %}
+    <div class="createPost">
+        <a href="/createPost">
+            <i class="bi bi-plus-square"></i>
+            Create Post
+        </a>
+    </div>
+{% endif %}
+    <div class="container" style = "margin-top: 10px;">
+        <div class="row d-flex flex-wrap">
+            {% for food in profileUser.Foods() %}
+                <div class="col-md-3 mb-3">
+                    {% include "partials/miniPost.html" %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

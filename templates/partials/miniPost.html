@@ -1,0 +1,143 @@
+<head>
+    <style>
+        .food-card {
+            width: 100%;
+            max-width: 300px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: transparent;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(77, 77, 77, 0.171);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .food-card:hover {
+            scale: 1.01;
+            padding: 7px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            background-color: #ececec3f;
+            border-radius: 15px;
+        }
+
+        .food-card-header {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .food-card-header:hover {
+            background-color: #e0e0e027;
+            scale: 1.02;
+            border-radius: 10px;
+        }
+
+        .food-card-header img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .food-card-header p {
+            margin-left: 1rem;
+            margin-bottom: 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .food-card-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            overflow: visible;
+            text-align: left;
+            margin: 1;
+        }
+
+        .food-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .food-card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .food-card-body p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+
+        .food-card-body i {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .food-card {
+                max-width: 100%;
+                height: auto;
+                padding: 12px;
+            }
+
+            .food-card-img {
+                height: 180px;
+            }
+
+            .food-card-header p {
+                font-size: 1rem;
+            }
+
+            .food-card-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container food-card">
+        <a href="{{ url_for('Profile', userID=food.Poster().id) }}">
+            <div class="food-card-header">
+                <img src="{{ url_for('static', filename = food.Poster().profilePic) }}" 
+                    alt="{{ food.Poster().username }}'s Profile Picture" 
+                    class="img-fluid rounded-circle">
+                <p class="ms-3">{{ food.Poster().username }}</p>
+            </div>
+        </a>
+
+        <h1 class="food-card-title">
+            {{ food.name }}
+        </h1>
+        <a href="{{url_for('FoodPage', foodID = food.id)}}">
+            <div>
+                <img src="{{ url_for('static', filename=food.img) }}"
+                    class="food-card-img" 
+                    alt="Image of {{ food.name }}">
+
+                <div class="food-card-body">
+                    <p><strong>Duration:</strong> {{ food.duration }} minutes</p>
+                    <p>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        {{ food.Rating() }}
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+</body>

@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}Create a Post{% endblock %}
+
+{% block style %}
+    <style>
+        .food-card {
+            display: flex;
+            flex-direction: column;
+            background-color: transparent;
+            border: 0px;
+            color: black;
+            overflow: hidden;
+        }
+
+        .food-card-header {
+            margin-top: 1rem;
+            display: flex;
+            margin-bottom: 1rem;
+            transition: ease-in background-color 0.1s, ease-in scale 0.1s;
+        }
+
+        .food-card-header:hover {
+            border-radius: 10px;
+            background-color: #e0e0e027;
+            scale: 1.01;
+        }
+
+        .food-card-header img {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .food-card-header p {
+            margin-left: 1rem;
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .food-card-title {
+            font-size: 1.5rem;
+            overflow: visible;
+        }
+
+        .food-card-img {
+            border-radius: 20px;
+            max-width: 1200px;
+            width: 100%;
+            height: auto;
+        }
+
+        .food-card-body {
+            display: flex;
+            padding: 1rem;
+            overflow: visible; 
+        }
+
+        .food-card-body .ml-auto{
+            margin-left: auto;
+        }
+
+        .food-card-body p {
+            margin: 0;
+        }
+
+        .content-container {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .description-section {
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: auto;
+        }
+
+        .ingredients-section {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .ingredients-section span {
+            display: inline-block;
+            background-color: #8A9A5B;
+            color: white;
+            padding: 5px 10px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            border-radius: 15px;
+            transition: ease-in-out padding 0.2s, ease background-color 0.1s;
+        }
+
+        .ingredients-section span:hover{
+            padding: 7px 12px;
+            background-color: #738a47;
+        }
+
+        .reviews-section {
+            background-color: #f8f8f8;
+            padding: 25px;
+            border-radius: 8px;
+            max-height: 600px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .reviews-section-btn{
+            background-color: #8A9A5B;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin-left: auto;
+            color: white;
+            transition: ease-in background-color 0.1s, ease-in-out padding 0.2s;
+            padding:9px;
+        }
+
+        .reviews-section-btn:hover{
+            padding:11px;
+            background-color: #738a47;
+        }
+
+        .food-card-body .actions{
+            margin-left: auto;
+            display: flex;
+            transition: transform 0.2s, color 0.3s ease-in-out;
+        }
+
+       .food-card-body .actions .save {
+            position: relative; 
+        }
+
+        .food-card-body .actions .save i {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .food-card-body .actions .save .normal {
+            opacity: 1; 
+            color: #8A9A5B;
+            transform: scale(1);
+        }
+
+        .food-card-body .actions .save .fill {
+            opacity: 0;
+            color: #8A9A5B;
+            transform: scale(0);
+        }
+
+        .food-card-body .actions .save:hover .normal {
+            opacity: 0; 
+            transform: scale(0);
+        }
+
+        .food-card-body .actions .save:hover .fill {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .food-card-body .actions .delete{
+            font-size: 25px;
+            margin-right: 40px;
+            color: #8A9A5B;
+            transition: ease-in transform 0.2s, ease-in color 0.2s;
+        }
+
+        .food-card-body .actions .delete:hover{
+            transform: scale(1.05);
+            color: rgb(212, 106, 106);
+        }
+
+        .food-card-body .actions .save i{
+            font-size: 25px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container" style="margin-top: 30px;">
+        <div class="content-container">
+            <div class="food-card">
+                <a href="{{ url_for('Profile', userID=food.Poster().id) }}" style="text-decoration: none; color: black;">
+                    <div class="food-card-header">
+                        <img src="{{ url_for('static', filename = food.Poster().profilePic) }}"
+                            alt="{{ food.Poster().username }}'s Profile Picture" 
+                            class="img-fluid rounded-circle">
+                        <p class="ms-3 mb-0">{{ food.Poster().username }}</p>
+                    </div>
+                </a>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h1 class="food-card-title card-title mb-0">
+                        {{ food.name }}
+                    </h1>
+                    <p class="mb-0" style="font-size: 1rem; color: #888;">{{ food.Date() }}</p>
+                </div>
+
+
+                <img src="{{ url_for('static', filename=food.img) }}"
+                    class="food-card-img" 
+                    alt="Image of {{ food.name }}">
+
+                <div class="food-card-body">
+                    <div>
+                        <p><strong>Duration:</strong> {{ food.duration }} minutes</p>
+                        <p>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            {{ food.Rating() }} ({{ food.Reviews()|length }})
+                        </p>
+                    </div>
+
+                    <div class = "actions">
+                        {% if user.is_authenticated %}
+                            {% if food.posterID == user.id %}
+                            <a class = "delete" href="{{url_for('DeleteFood', foodID = food.id)}}">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            {% endif %}
+                            
+                            {% if user.HasSavedFood(food.id) %}
+                                <a class = "save" href = "{{url_for('UnsavePost', foodID = food.id)}}">
+                                    <i class="bi bi-bookmark fill"></i>
+                                    <i class="bi bi-bookmark-fill normal"></i>
+                                </a>
+                            {% else %}
+                                <a class = "save" href = "{{url_for('SavePost', foodID = food.id)}}">
+                                    <i class="bi bi-bookmark normal"></i>
+                                    <i class="bi bi-bookmark-fill fill"></i>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div style= "width: 950px">
+                <div class = "description-section mb-3">
+                    <h2>Description</h2>
+                    <p>{{ food.description }}</p>
+
+                    <div class="ingredients-section">
+                        <strong>Ingredients:</strong>
+                        {% for ingredient in food.Ingredients() %}
+                            <span>{{ ingredient }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                 <div class="reviews-section">
+                    {% if not user.is_authenticated %}
+                    <p>Login to post a review</p>
+                    {% else %}
+                    {% if not food.HasUserReviewed(user.id) and not food.posterID == user.id %}
+                        <form method="POST" class = "mb-5">
+                            <textarea name="content" rows="" class="form-control mb-1" placeholder="Write your review..." required></textarea>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-star-fill text-warning" style="font-size: 1.5rem;"></i>
+                                <input  type="number"
+                                        name="rating"
+                                        class="form-control mx-2"
+                                        placeholder="0" 
+                                        min="0" max="5" step="0.1"
+                                        style = "width: 70px;"
+                                        required>
+
+                                <span>/ 5</span>
+                                <button type="submit" class="reviews-section-btn">Post Review</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% endif %}
+                    <div class = "overflow-auto">
+                        {% if food.Reviews() %}
+                            {% for review in food.Reviews() %}
+                                {% include 'partials/review.html' %}
+                            {% endfor %}
+                        {% else %}
+                            <p>No reviews yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

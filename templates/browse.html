@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Browse{% endblock %}
+
+{% block style %}
+<style>
+    .search-box {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    .selection-summary {
+        margin-top: 15px;
+        font-size: 0.95rem;
+    }
+
+    .sort-tag {
+        display: inline-block;
+        background-color: #c0392b;
+        color: white;
+        padding: 6px 14px;
+        margin: 5px 6px 0 0;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .time-tag {
+        display: inline-block;
+        background-color: #3498db; /* blue */
+        color: white;
+        padding: 6px 14px;
+        margin: 5px 6px 0 0;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .ingredient {
+        display: inline-block;
+        background-color: #2e8b57;
+        color: white;
+        padding: 6px 14px;
+        margin: 5px 6px 0 0;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        transition: 0.2s ease-in-out;
+    }
+
+    .ingredient:hover {
+        background-color: #246b43;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+
+    <div class="search-box">
+        <form method="POST">
+            <div class="row g-2 align-items-center">
+
+                <div class="col-md-4">
+                    <input
+                        type="text"
+                        name="ingredients"
+                        class="form-control"
+                        placeholder="Search by ingredients (split by ',')"
+                    >
+                </div>
+
+                <div class="col-md-2">
+                    <select class="form-control" name="sort">
+                        <option value="new">New</option>
+                        <option value="top">Top Rated</option>
+                        <option value="review count">
+                            Review Count
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-control" name="time">
+                        <option value="">All Time</option>
+                        <option value="1h">Last Hour</option>
+                        <option value="24h">Last 24 Hours</option>
+                        <option value="7d">Last Week</option>
+                        <option value="30d">Last Month</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-grid">
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        style="background-color: #8A9A5B; border: none; border-radius: 10px;"
+                    >
+                        Search
+                    </button>
+                </div>
+
+            </div>
+
+            {% if ingredients or sort or time %}
+            <div class="selection-summary">
+
+                {% if sort %}
+                    <span class="sort-tag">
+                        Sort: {{ sort }}
+                    </span>
+                {% endif %}
+
+                {% if time %}
+                    <span class="time-tag">
+                        Time:
+                        {% if time == '1h' %}Last Hour
+                        {% elif time == '24h' %}Last 24 Hours
+                        {% elif time == '7d' %}Last Week
+                        {% elif time == '30d' %}Last Month
+                        {% endif %}
+                    </span>
+                {% endif %}
+
+                {% for ingredient in ingredients %}
+                    <span class="ingredient">
+                        {{ ingredient }}
+                    </span>
+                {% endfor %}
+
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+
+    <div class="row">
+        {% if foods %}
+            {% for food in foods %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    {% include "partials/miniPost.html" %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted text-center">
+                Empty stomach — No foods found.
+            </p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

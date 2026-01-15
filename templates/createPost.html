@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Create a Post{% endblock %}
+
+{% block style %}
+<style>
+    .btn-custom {
+        background-color: #8A9A5B;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .btn-custom:hover {
+        background-color: #738a47;
+    }
+
+    .btn-return {
+        width: 100%;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+    }
+
+    .btn-return:hover {
+        background-color: #e0e0e0;
+    }
+
+    .card {
+        border-radius: 15px;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        border-color: #8A9A5B;
+        box-shadow: 0 0 5px rgba(138, 154, 91, 0.5);
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4">
+      <h2 class="text-center mb-4">Create A Food</h2>
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="mb-1">
+          <input class="form-control" name="foodName" placeholder="Food Name*" required>
+        </div>
+
+        <div class = "mb-3">
+          <input class="form-control" type = "file" name="image" placeholder="Upload Image" required>
+        </div>
+
+        <div class="mb-1">
+          <textarea class="form-control" name="ingredients" rows="1" placeholder="Ingredients* ( split by ',' )" required></textarea>
+        </div>
+        
+        <div class = "mb-3">
+          <textarea class="form-control" name="description" rows="4" placeholder="Description (optional but recommended)"></textarea>
+        </div>
+
+        <div class = "mb-3">
+          <input type ="number" class="form-control" name="duration" placeholder="duration ( in minutes )" min = "0" max = "1440" step = "5" required>
+        </div>
+
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <button type="submit" class="btn-custom w-100 mt-3">Post</button>
+      </form>
+
+      <a href="{{ url_for('Profile', userID=user.id) }}">
+        <button class="btn-return mt-3">Return</button>
+      </a>
+    </div>
+  </div>
+{% endblock %}

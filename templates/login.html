@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%; border-radius: 15px;">
+      <h2 class="text-center mb-4" style="color: #8A9A5B;">Login</h2>
+
+      <form method="POST">
+        <div class="mb-3">
+
+          <label for="email" class="form-label" style="color: #8A9A5B;">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label" style="color: #8A9A5B;">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <p>{{error}}</p>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3" style="background-color: #8A9A5B; border: none; border-radius: 10px;">Login</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <p>Don't have an account? <a href="/register" style="color: #8A9A5B;">Register here</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
