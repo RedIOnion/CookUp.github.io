@@ -1,6 +1,8 @@
-from models import User, db
-        
+from models import User
+
 def StringChecker(string, name, charMinAmount, charMaxAmount, needsUnique, uniqueList):
+    if " " in string: return "No Spaces Allowed"
+
     length = len(string)
     if length < charMinAmount:
         return f"{name} is too short."
@@ -12,10 +14,6 @@ def StringChecker(string, name, charMinAmount, charMaxAmount, needsUnique, uniqu
             return f"{name} needs to be unique."
         
     return None # Anu errori ar aris.
-
-def AddUser(newUser):
-    db.session.add(newUser)
-    db.session.commit()
 
 def UsedUsernames():
     users = User.query.all()
@@ -33,9 +31,3 @@ def UsedEmails():
         emails.append(user.email)
 
     return emails
-
-def UserByEmail(email):
-    return User.query.filter_by(email=email).first()
-
-def UserByID(id):
-    return User.query.filter_by(id=id).first()

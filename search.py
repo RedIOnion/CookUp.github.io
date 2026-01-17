@@ -2,33 +2,38 @@ from models import Food
 from datetime import datetime
 
 
-def CleanedIngredientsList(ingredients):
-    rawIngredients = ingredients.split(",")
+def CleanedIngredientsList(ingredients): # გადაყავს ინგრედიენტების String-ი List-ში
+    if ingredients == "": return None
 
-    ingredientList = []
+    return ingredients.lower().replace(" ", "").split(",")
 
-    for ingredient in rawIngredients:
-        cleanedIngredient = ingredient.lower().replace(" ", "")
-
-        if cleanedIngredient != "":
-            ingredientList.append(cleanedIngredient)
-
-    return ingredientList
-
+# ფუნქცია ამოწმებს რა ინგრედიენტები გვაქვს და ადარებს თითოეულ საჭმელს მისთვის საჭირო ინგრედიენტების სიას.
+# თუ საჭმლისთვის საჭირო ყველა ინგრედიენტი ჩვენს სიაში შედის, მაშინ ეს საჭმელი შეიძლება მომზადდეს და ემატება შედეგს. 
+# მაგალითად, თუ გვაქვს წყალი, ფქვილი, კვერცხი და მარილი, 
+#
+# ხოლო საჭმელებია 
+# ბლინი    (სჭირდება ფქვილი, კვერცხი და წყალი),
+# პური     (სჭირდება ფქვილი, წყალი და საფუარი),
+# ომლეტი  (სჭირდება კვერცხი და ზეთი)
+# 
+# ფუნქცია დააბრუნებს მხოლოდ ბლინს, რადგან მისი ყველა ინგრედიენტი გვაქვს.
 def FoodFromIngredients(cleanedIngredientsList):
-    foods = Food.query.all()
+    foods = Food.query.all() # ყველა საჭმელი
 
-    if not cleanedIngredientsList:
+    # თუ ინგრედიენტები არ გვაქვს მითითებული ანუ მომხმარებელს არ აქვს სურვილი საჭმელი ინგრედეინეტის მიხედვით მოძებნოს და უბრალოდ ყველა საჭმელს ვაბრუნებთ
+    if cleanedIngredientsList == None:
         return foods
 
     searchedFoods = []
 
     for food in foods:
-        foodIngredients = food.Ingredients()
+        foodIngredients = food.Ingredients() # ინგრედიენტები რომელსაც უნდა ვაკმაყოფილებდეთ
+
+        # ვქმნით ცვლადს რომელიც განსაზღვრავს გვაქვს თუ არა საჭმლის მომზადებისთვის საჭირო ინგრედიენტები, რომელსაც თუ საჭიროა მომავალში შევცვლით
         allIngredientsAllowed = True
 
         for ingredient in foodIngredients:
-            if ingredient not in cleanedIngredientsList:
+            if ingredient not in cleanedIngredientsList: # თუ რომელიმე ინგრედიენტი არ გვაქვს მაშინ არ გვატყობს ეს საჭმელი
                 allIngredientsAllowed = False
                 break
 
@@ -37,7 +42,7 @@ def FoodFromIngredients(cleanedIngredientsList):
 
     return searchedFoods
 
-def SortedFoodFromIngredients(foodFromIngredients, sort):
+def SortedFoodFromIngredients(foodFromIngredients, sort): # sort ბრძანების საშუალებით ალაგებს საჭმელს მომხმარებლის მიერ არჩეული sort ტიპით
     if sort == "new":
         return foodFromIngredients
     elif sort == "top": 
@@ -48,19 +53,19 @@ def SortedFoodFromIngredients(foodFromIngredients, sort):
         foodFromIngredients.sort(key=lambda food: len(food.Reviews()), reverse=True)
         return foodFromIngredients
 
-def FilterTime(foods, seconds):
+def FilterTime(foods, seconds): # აბრუნებს იმ საჭმელს რომელიც მოცემულ დროზე ადრე დაიდო
     now = datetime.now()
-    return [
-        food for food in foods
-        if (now - food.postDate).total_seconds() <= seconds
-    ]
+    timedFoods = []
+
+    for food in foods:
+        if (now - food.postDate).total_seconds() <= seconds:
+            timedFoods.append(food)
+    return timedFoods
 
 def Search(cleanedIngredientsList, sort, time):
     foodFromIngredients = FoodFromIngredients(cleanedIngredientsList)
 
     foods = SortedFoodFromIngredients(foodFromIngredients, sort)
-
-    now = datetime.now()
 
     if time == "1h":
         foods = FilterTime(foods, 3600)
