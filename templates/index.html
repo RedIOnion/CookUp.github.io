@@ -125,6 +125,18 @@
     </div>
   </div>
 
+  <div class = "mb-5">
+    <h2 class = "section-title">What's Trending?</h2>
+    
+    <div class = "row g-4">
+      {% for food in homeFoods %}
+      <div class="col-md-3 col-1">
+      {% include "partials/miniPost.html" %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
   <div class="cta-box">
     <h2 class="fw-bold">Got ingredients but no ideas?</h2>
     <p class="text-muted mt-2">

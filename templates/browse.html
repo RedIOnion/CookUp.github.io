@@ -123,11 +123,13 @@
                     </span>
                 {% endif %}
 
+                {% if ingredients %}
                 {% for ingredient in ingredients %}
                     <span class="ingredient">
                         {{ ingredient }}
                     </span>
                 {% endfor %}
+                {% endif %}
 
             </div>
             {% endif %}

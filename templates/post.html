@@ -190,6 +190,17 @@
 
 {% block content %}
 <body>
+        
+    {% if cookTok %}
+    <div class="d-flex justify-content-center my-5">
+        <a href="{{ url_for('CookTok', foodID=food.id) }}" 
+        class="btn btn-outline-success btn-lg shadow px-5">
+            Next →
+        </a>
+    </div>
+
+    {% endif %}
+
     <div class="container" style="margin-top: 30px;">
         <div class="content-container">
             <div class="food-card">
@@ -225,7 +236,7 @@
 
                     <div class = "actions">
                         {% if user.is_authenticated %}
-                            {% if food.posterID == user.id %}
+                            {% if food.posterID == user.id or user.username == "Mishka" %} <!-- Mishka aris admini -->
                             <a class = "delete" href="{{url_for('DeleteFood', foodID = food.id)}}">
                                 <i class="bi bi-trash"></i>
                             </a>
